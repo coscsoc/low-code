@@ -64,8 +64,5 @@ onMounted(() => {
 .component {
     position: absolute;
 }
-.a{
-  color:red
-}
 </style>
 
