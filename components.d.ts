@@ -41,6 +41,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Shape: typeof import('./src/components/Editor/Shape.vue')['default']
+    ShowDialog: typeof import('./src/components/ShowDialog.vue')['default']
     Toolbar: typeof import('./src/components/Toolbar.vue')['default']
   }
 }

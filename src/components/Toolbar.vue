@@ -140,6 +140,10 @@ const clearEditor = () => {
   globalStore.$reset()
   snapshotStore.recordSnapshot()
 }
+const release = () => {
+  const releaseEventBus = useEventBus('release')
+  releaseEventBus.emit()
+}
 </script>
 
 <template>
@@ -163,6 +167,9 @@ const clearEditor = () => {
 
       <el-button style="margin-left: 10px;" @click="preview(false)">
         预览
+      </el-button>
+      <el-button style="margin-left: 10px;" @click="release()">
+        发布
       </el-button>
       <el-button @click="save">
         保存

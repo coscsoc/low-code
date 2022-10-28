@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import type { ComponentInternalInstance } from 'vue'
 import type { ComponentNode, GroupComponentNode } from '~/types/index'
 // import { ContextMenu } from '~/components/Editor/ContextMenu'
 
@@ -154,9 +155,24 @@ const handleMouseDown = (e: MouseEvent) => {
   }
 }
 
+const releaseSrc = ref('')
+const sendVisible = ref(false)
+const curInstance = ref<ComponentInternalInstance | null>()
 onMounted(() => {
   const hideAreaEventBus = useEventBus('hide-area')
   hideAreaEventBus.on(() => hideArea())
+  const releaseEventBus = useEventBus('release')
+  curInstance.value = getCurrentInstance()
+  releaseEventBus.on(() => {
+    if (!curInstance.value)
+      return
+    const id = generateID().slice(0, 15)
+
+    useStorage(`cache_componentData_${id}`, JSON.stringify(globalStore.componentData))
+    useStorage(`cache_canvasStyle_${id}`, JSON.stringify(globalStore.canvasStyleData))
+    sendVisible.value = true
+    releaseSrc.value = `/release/${id}`
+  })
 })
 </script>
 
@@ -206,6 +222,7 @@ onMounted(() => {
     <ContextMenu />
     <MarkLine />
     <Area />
+    <ShowDialog v-model:sendVisible="sendVisible" :src="releaseSrc" />
   </div>
 </template>
 
